@@ -1,6 +1,6 @@
 resource "azurerm_resource_group" "example" {
-  name     = var.bucket_name
-  location = "West Europe"
+  name     = "testing_tdp"
+  location = var.location
 }
 
 resource "azurerm_storage_account" "example" {
@@ -16,9 +16,15 @@ resource "azurerm_storage_account" "example" {
 }
 
 resource "azurerm_storage_container" "example" {
-  name                  = "vhds"
+  name                  = var.bucket_name
   storage_account_id    = azurerm_storage_account.example.id
   container_access_type = "private"
 }
 
 variable "bucket_name" {}
+variable "location" {}
+
+output "container_id" {
+  description = "The ID of the Storage Container."
+  value       = azurerm_storage_container.example.id
+}
